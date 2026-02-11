@@ -16,11 +16,10 @@ anaylsis_text = "" # variable to store chatgpt response
 
 def get_client():
     api_key =  os.getenv("OPENAI_API_KEY") 
+     
     if not api_key:
         st.error("API KEY NOT FOUND. Sample PDFS still work tho :)")
-        
-    else: 
-        return OpenAI(api_key=api_key)
+        return None
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # base directory for the project (for file paths)
@@ -57,6 +56,14 @@ def pre_select_pdf(): # selection for pdf samples function
 
 
 def scan_fine_print(uploaded_file): # scans the pdf (main thing)  
+    if not uploaded_file:
+        return 
+    
+    client = get_client()
+    
+    # Check if client exists before proceeding
+    if client is None:
+        return
     if not uploaded_file: # if the file is not uploaded then it just returns nothing 
         return 
     client = get_client()
@@ -97,5 +104,6 @@ elif sample_pdf:
     if st.button("Scan Sample PDF"): # sample scanning button
 
         scan_fine_print(sample_pdf) # runs sample pdf for scanning
+
 
 
