@@ -19,7 +19,8 @@ def get_client():
     if not api_key:
         st.error("API KEY NOT FOUND. Sample PDFS still work tho :)")
         
-    return OpenAI(api_key=api_key)
+    else: 
+        return OpenAI(api_key=api_key)
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # base directory for the project (for file paths)
@@ -96,4 +97,5 @@ elif sample_pdf:
     if st.button("Scan Sample PDF"): # sample scanning button
 
         scan_fine_print(sample_pdf) # runs sample pdf for scanning
+
 
