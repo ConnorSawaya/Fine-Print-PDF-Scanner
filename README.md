@@ -11,3 +11,9 @@ This took around 3 hours to make as i had some issues at the start.
 
 To use it simply select on sample pdf and chose from one of the options then click scan (name of sample pdf) then it will display the prescanned pdf.
 <img width="1812" height="941" alt="fineprint" src="https://github.com/user-attachments/assets/e72653aa-d99f-4683-85ea-5068889ca2d5" />
+
+
+
+
+
+<img width="579" height="808" alt="image" src="https://github.com/user-attachments/assets/f6f1a799-3b18-4826-935b-469221c60c41" />
