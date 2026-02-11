@@ -10,7 +10,7 @@ This took around 3 hours to make as i had some issues at the start.
 
 
 WEBSITE TO TRY IT OUT/PLAY AROUND!!!!!
-https://upgraded-capybara-jjv6vvw46794c5p7x-8501.app.github.dev/
+https://fine-print-pdf-scanner-2.streamlit.app/
 !!!!!!!!!!!!!
 
 
