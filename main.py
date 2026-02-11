@@ -15,11 +15,14 @@ load_dotenv() # loads env variavble for api key!!
 anaylsis_text = "" # variable to store chatgpt response
 
 def get_client():
-    api_key =  os.getenv("OPENAI_API_KEY") 
-     
+    api_key = os.getenv("OPENAI_API_KEY") 
+    
     if not api_key:
         st.error("API KEY NOT FOUND. Sample PDFS still work tho :)")
         return None
+        
+    # You MUST return the client here if the key exists!
+    return OpenAI(api_key=api_key)
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # base directory for the project (for file paths)
@@ -104,6 +107,7 @@ elif sample_pdf:
     if st.button("Scan Sample PDF"): # sample scanning button
 
         scan_fine_print(sample_pdf) # runs sample pdf for scanning
+
 
 
 
