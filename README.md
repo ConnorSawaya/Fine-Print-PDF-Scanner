@@ -10,8 +10,7 @@ This took around 3 hours to make as i had some issues at the start.
 
 
 WEBSITE TO TRY IT OUT/PLAY AROUND!!!!!
-https://fine-print-pdf-scanner-2.streamlit.app/
-!!!!!!!!!!!!!
+https://fine-print-pdf-scanner-production.up.railway.app/
 
 
 To use it simply select on sample pdf and chose from one of the options then click scan (name of sample pdf) then it will display the prescanned pdf.
