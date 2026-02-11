@@ -9,6 +9,11 @@ This mainly runs on streamlit, as it was easy to setup and looked good and ran f
 This took around 3 hours to make as i had some issues at the start. 
 
 
+WEBSITE TO TRY IT OUT/PLAY AROUND!!!!!
+https://upgraded-capybara-jjv6vvw46794c5p7x-8501.app.github.dev/
+!!!!!!!!!!!!!
+
+
 To use it simply select on sample pdf and chose from one of the options then click scan (name of sample pdf) then it will display the prescanned pdf.
 <img width="1812" height="941" alt="fineprint" src="https://github.com/user-attachments/assets/e72653aa-d99f-4683-85ea-5068889ca2d5" />
 
