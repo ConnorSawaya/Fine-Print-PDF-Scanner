@@ -16,8 +16,10 @@ anaylsis_text = "" # variable to store chatgpt response
 
 def get_client():
     api_key =  os.getenv("OPENAI_API_KEY") 
+    api-key-set = True
     if not api_key:
         st.error("API KEY NOT FOUND. Sample PDFS still work tho :)")
+        api-key-set = False 
     return OpenAI(api_key=api_key)
 
 
@@ -54,35 +56,39 @@ def pre_select_pdf(): # selection for pdf samples function
 
 
 
-def scan_fine_print(uploaded_file): # scans the pdf (main thing)
-    if not uploaded_file: # if the file is not uploaded then it just returns nothing 
-        return 
-    client = get_client()
+def scan_fine_print(uploaded_file): # scans the pdf (main thing)  
     
-#---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
-    reader = PdfReader(uploaded_file) # reads the pdf file
-    full_text = "".join([page.extract_text() for page in reader.pages]) # extracts text and turns it into on string for chatgpt 
-#---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
+    If api-key-set = False:
+    	Break
+    Elsif api-key-set = True:
+        if not uploaded_file: # if the file is not uploaded then it just returns nothing 
+            return 
+        client = get_client()
+        
+    #---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
+        reader = PdfReader(uploaded_file) # reads the pdf file
+        full_text = "".join([page.extract_text() for page in reader.pages]) # extracts text and turns it into on string for chatgpt 
+    #---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
+        
     
-
- #---------------------------------------------------- chatgpt api stuff ----------------------------------------------------#  
-    with st.spinner("Analyzing for fine print..."):
-        response = client.chat.completions.create(
-            model="gpt-4o-mini", # model selection (gpt4.0 mini is hella cheap so) can be changed later for maybe something cheaper or more powerful
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that identifies fine print in documents."},
-                {"role": "user", "content": f"Identify any fine print that could concern most people, stuff that most people would overlook at the end of the response please include a score out of 100 with 100 being the most concerning and 0 being the safest THE LAST FEW WORDS MUST BE THIS IN THIS FORMAT MAKE IT IN THIS FORMAT \"Score: <number> /100 \" \n\n{full_text}" }
-            ]
-        ) 
-
-        anaylsis_text = response.choices[0].message.content 
-        match = re.search(r"Score:\s*(\d+)", anaylsis_text) # looks for the score using the format i gave it before
-        if match: # 
-            score_val = int(match.group(1))
-            st.progress(score_val/100, "**Fine Print Score**, HIGHER SCORE --->> MORE CONCERING") # Shows the progress bar for the score chatgpt gives us at the end of our analysis!
-        else:
-            st.warning("No Score Found :(")
-    st.write(anaylsis_text)
+     #---------------------------------------------------- chatgpt api stuff ----------------------------------------------------#  
+        with st.spinner("Analyzing for fine print..."):
+            response = client.chat.completions.create(
+                model="gpt-4o-mini", # model selection (gpt4.0 mini is hella cheap so) can be changed later for maybe something cheaper or more powerful
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant that identifies fine print in documents."},
+                    {"role": "user", "content": f"Identify any fine print that could concern most people, stuff that most people would overlook at the end of the response please include a score out of 100 with 100 being the most concerning and 0 being the safest THE LAST FEW WORDS MUST BE THIS IN THIS FORMAT MAKE IT IN THIS FORMAT \"Score: <number> /100 \" \n\n{full_text}" }
+                ]
+            ) 
+    
+            anaylsis_text = response.choices[0].message.content 
+            match = re.search(r"Score:\s*(\d+)", anaylsis_text) # looks for the score using the format i gave it before
+            if match: # 
+                score_val = int(match.group(1))
+                st.progress(score_val/100, "**Fine Print Score**, HIGHER SCORE --->> MORE CONCERING") # Shows the progress bar for the score chatgpt gives us at the end of our analysis!
+            else:
+                st.warning("No Score Found :(")
+        st.write(anaylsis_text)
 st.title("PDF fine print scanner")
 pdf_file = select_pdf() # calls the function to select the pdf file for the scanning to happen
 
@@ -93,4 +99,5 @@ if pdf_file:
         st.download_button("Download Simplified PDF", data=anaylsis_text, file_name=pdf_file.name.replace(".pdf", "_simplified.txt"), mime="text/plain")
 elif sample_pdf:
     if st.button("Scan Sample PDF"): # sample scanning button
+
         scan_fine_print(sample_pdf) # runs sample pdf for scanning
