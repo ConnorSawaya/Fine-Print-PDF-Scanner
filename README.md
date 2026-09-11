@@ -21,3 +21,17 @@ To use it simply select on sample pdf and chose from one of the options then cli
 
 
 <img width="579" height="808" alt="image" src="https://github.com/user-attachments/assets/f6f1a799-3b18-4826-935b-469221c60c41" />
+
+
+## Install & Run (one command)
+``bash
+pip install -r requirements.txt
+cp .env.example .env   # optional, for live scans
+streamlit run main.py
+``n## Test
+``bash
+python -m py_compile main.py
+``n## Env
+- OPENAI_API_KEY (optional). Without it: MOCK MODE with pre-analyzed samples (Discord TOS, Apple Purchase Agreement). Never commit .env.
+## Deploy (Railway)
+Procfile present with $PORT binding.

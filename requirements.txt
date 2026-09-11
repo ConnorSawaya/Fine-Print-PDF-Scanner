@@ -1,18 +1,12 @@
 # Main App
 streamlit==1.42.0
-pandas
-numpy
 
-# OpenAI  Pinning to the version that fixed the 'proxies' bug
+# OpenAI - pinned to the version that fixed the 'proxies' bug
 openai==1.55.3
 httpx==0.27.2
 
-# PDF Processing
-pypdf
-pdfreader
-pycryptodome
+# PDF processing
+pypdf>=3.0,<7
 
 # Utilities
-python-dotenv
-tenacity
-watchdog
+python-dotenv>=1.0,<2

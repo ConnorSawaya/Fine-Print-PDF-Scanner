@@ -60,20 +60,26 @@ def pre_select_pdf(): # selection for pdf samples function
 
 def scan_fine_print(uploaded_file): # scans the pdf (main thing)  
     if not uploaded_file:
-        return 
+        st.warning("Upload a PDF first, or try a sample PDF below (works offline).")
+        return ""
     
     client = get_client()
     
     # Check if client exists before proceeding
     if client is None:
-        return
-    if not uploaded_file: # if the file is not uploaded then it just returns nothing 
-        return 
-    client = get_client()
+        st.warning("Live scan needs OPENAI_API_KEY. Sample PDFs below work without a key.")
+        return ""
         
     #---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
-    reader = PdfReader(uploaded_file) # reads the pdf file
-    full_text = "".join([page.extract_text() for page in reader.pages]) # extracts text and turns it into on string for chatgpt 
+    try:
+        reader = PdfReader(uploaded_file) # reads the pdf file
+        full_text = "".join([(page.extract_text() or "") for page in reader.pages]) # extracts text into one string
+    except Exception as e:
+        st.error(f"Could not read that PDF: {e}")
+        return ""
+    if not full_text.strip():
+        st.warning("No readable text found in that PDF. Try a sample PDF below.")
+        return ""
     #---------------------------------------------------- PDF reader to convert pdf to text ----------------------------------------------------#  
         
     
@@ -90,23 +96,25 @@ def scan_fine_print(uploaded_file): # scans the pdf (main thing)
         anaylsis_text = response.choices[0].message.content 
         match = re.search(r"Score:\s*(\d+)", anaylsis_text) # looks for the score using the format i gave it before
         if match: # 
-            score_val = int(match.group(1))
-            st.progress(score_val/100, "**Fine Print Score**, HIGHER SCORE --->> MORE CONCERING") # Shows the progress bar for the score chatgpt gives us at the end of our analysis!
+            score_val = max(0, min(100, int(match.group(1))))
+            st.progress(score_val / 100, text="Fine Print Score — HIGHER = MORE CONCERNING") # score bar
         else:
             st.warning("No Score Found :(")
         st.write(anaylsis_text)
+        return anaylsis_text
 st.title("PDF fine print scanner")
+if not os.getenv("OPENAI_API_KEY"):
+    st.info("MOCK MODE: no OPENAI_API_KEY found. Sample PDFs below work offline with pre-analyzed results. Add OPENAI_API_KEY in .env for live scans.")
 pdf_file = select_pdf() # calls the function to select the pdf file for the scanning to happen
 
-sample_pdf = pre_select_pdf() # calls the function to select the sample pdf file (for testing)
+pre_select_pdf() # sample pdf viewer (works offline, no key needed)
 if pdf_file:
     if st.button("Scan PDF"): # button to scan the uploaded pdf file
-        scan_fine_print(pdf_file) # runs scan fine print on uploaded pdf file
-        st.download_button("Download Simplified PDF", data=anaylsis_text, file_name=pdf_file.name.replace(".pdf", "_simplified.txt"), mime="text/plain")
-elif sample_pdf:
-    if st.button("Scan Sample PDF"): # sample scanning button
-
-        scan_fine_print(sample_pdf) # runs sample pdf for scanning
+        try:
+            result = scan_fine_print(pdf_file) # runs scan fine print on uploaded pdf file
+            st.download_button("Download Simplified PDF", data=result or "", file_name=pdf_file.name.replace(".pdf", "_simplified.txt"), mime="text/plain")
+        except Exception as e:
+            st.error(f"Scan failed: {e}. Try a sample PDF below (works offline).")
 
 
 
