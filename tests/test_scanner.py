@@ -75,7 +75,19 @@ class ScanBudgetTests(unittest.TestCase):
         with patch.dict(os.environ, {}, clear=True):
             self.assertIsNone(scanner.get_client())
 
-    def test_request_bounds_timeout_retries_and_output_tokens(self):
+    def test_client_uses_bounded_timeout_and_no_retries(self):
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}), patch.object(
+            scanner, "OpenAI"
+        ) as openai:
+            scanner.get_client()
+
+        openai.assert_called_once_with(
+            api_key="test-key",
+            timeout=scanner.OPENAI_TIMEOUT_SECONDS,
+            max_retries=0,
+        )
+
+    def test_request_caps_output_tokens_and_marks_document_untrusted(self):
         client = Mock()
         client.chat.completions.create.return_value.choices = [
             Mock(message=Mock(content="Review. Score: 55 /100"))

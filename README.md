@@ -14,6 +14,7 @@ Set `OPENAI_API_KEY` in the environment or local `.env` only if you want live sc
 
 ## Public demo protections
 
+- Dependency floors require Streamlit 1.54.0 or newer and pypdf 6.19.0 or newer. These versions include upstream fixes for a Windows SSRF issue and recent PDF parser resource-exhaustion issues.
 - Streamlit CORS and XSRF protections stay enabled.
 - Uploads are limited to 10 MB, 30 pages, and 24,000 extracted text characters. Encrypted PDFs are rejected.
 - Live analysis is limited to 3 scans per session and 12 scans per server process per rolling hour. Restarting a process resets the process-wide counter; deploy one app process per instance if relying on this budget.
