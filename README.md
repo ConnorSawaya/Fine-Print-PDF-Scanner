@@ -15,7 +15,7 @@ Set `OPENAI_API_KEY` in the environment or local `.env` only if you want live sc
 ## Public demo protections
 
 - Dependency floors require Streamlit 1.54.0 or newer and pypdf 6.19.0 or newer. These versions include upstream fixes for a Windows SSRF issue and recent PDF parser resource-exhaustion issues.
-- Streamlit CORS and XSRF protections stay enabled.
+- Streamlit CORS and XSRF protections stay enabled. The Railway demo is embedded from `connors.dev` with an exact origin allowlist and Streamlit's `SameSite=None` XSRF cookie setting; it must be served through HTTPS. Browsers that block third-party cookies can use the full-app link.
 - Uploads are limited to 10 MB, 30 pages, and 24,000 extracted text characters. Encrypted PDFs are rejected.
 - Live analysis is limited to 3 scans per session and 12 scans per server process per rolling hour. Restarting a process resets the process-wide counter; deploy one app process per instance if relying on this budget.
 - Each OpenAI request has a 30-second timeout, no automatic retries, and a 1,000-token response cap. Uploaded document text is treated as untrusted input.

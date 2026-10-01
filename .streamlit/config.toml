@@ -1,0 +1,8 @@
+[server]
+enableCORS = true
+enableXsrfProtection = true
+corsAllowedOrigins = [
+  "https://connors.dev",
+  "https://fine-print-pdf-scanner-production.up.railway.app",
+]
+xsrfCookieSameSite = "none"
