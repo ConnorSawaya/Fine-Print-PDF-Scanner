@@ -1,6 +1,7 @@
 # Main App
-# Security floor includes the Windows SSRF fix in Streamlit 1.54.0.
-streamlit>=1.54.0,<2
+# Security floor includes the Windows SSRF fix and the XSRF cookie option
+# required for secure cross-site uploads in Streamlit 1.64.0.
+streamlit>=1.64.0,<2
 
 # OpenAI - pinned to the version that fixed the 'proxies' bug
 openai==1.55.3
